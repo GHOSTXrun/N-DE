@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0a0a0a">
+  <meta
+    name="description"
+    content="NØDE: explore an AI-native token narrative through conversation."
+  >
+  <title>NØDE | Talk to the token.</title>
+
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <header>
+    <a class="brand" href="./" aria-label="NØDE home">
+      <img src="logo.svg" alt="" width="36" height="36">
+      <strong>NØDE<span>®</span></strong>
+    </a>
+
+    <span class="header-label">
+      AUTONOMOUS NARRATIVE / $NODE
+    </span>
+
+    <div class="header-actions">
+      <a
+        class="social-link"
+        href="https://x.com/NODEfunpl"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Follow NØDE on X"
+      >
+        [ X / @NODEFUNPL ↗ ]
+      </a>
+
+      <button class="help" data-query="/help">
+        [ --help ]
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <div class="eyebrow">
+        <span class="signal"></span>
+        NØDE TERMINAL
+        <span class="muted">// V.0.1.0</span>
+      </div>
+
+      <h1>
+        TALK TO<br>
+        THE TOKEN<span class="cursor">_</span>
+      </h1>
+
+      <div class="intro-bottom">
+        <p>
+          No bloated whitepaper.<br>
+          Everything about NØDE begins with a conversation.
+        </p>
+
+        <span class="session">
+          SESSION_001<br>
+          <span class="amber">[ CONCEPT MODE ]</span>
+        </span>
+      </div>
+    </section>
+
+    <div class="workspace">
+      <aside>
+        <div class="pane-title">
+          01 / EXPLORER
+          <span>−</span>
+        </div>
+
+        <div class="aside-content">
+          <div class="section-label">~/knowledge</div>
+
+          <nav aria-label="Question topics">
+            <button data-query="What is NØDE?">
+              <span>01</span>
+              Origin Story
+              <b>↗</b>
+            </button>
+
+            <button data-query="What is the token utility?">
+              <span>02</span>
+              Token Utility
+              <b>↗</b>
+            </button>
+
+            <button data-query="Explain the tokenomics">
+              <span>03</span>
+              Tokenomics
+              <b>↗</b>
+            </button>
+
+            <button data-query="Show me the roadmap">
+              <span>04</span>
+              Roadmap
+              <b>↗</b>
+            </button>
+
+            <button data-query="What is the contract and launch status?">
+              <span>05</span>
+              Contract + Launch
+              <b>↗</b>
+            </button>
+          </nav>
+
+          <div class="ascii-box" aria-hidden="true">
+            <pre>
+        ▄▄▄▄▄
+    ▄██▀     ▀██▄
+   ██   ▄█▄   ▐██
+   ██  ██ ██  ▐██
+   ██   ▀█▀   ▐██
+    ▀██▄   ▄██▀
+        ▀▀▀▀▀
+          │
+     [ N Ø D E ]
+            </pre>
+
+            <span>ONE NODE. MANY POSSIBILITIES.</span>
+          </div>
+
+          <div class="aside-note">
+            <span class="amber">[ ! ] KNOWLEDGE PREVIEW</span>
+            <p>
+              Concept knowledge demo.<br>
+              Official launch details are not yet available.
+            </p>
+          </div>
+        </div>
+
+        <div class="aside-footer">
+          UTF-8
+          <span>READ ONLY</span>
+        </div>
+      </aside>
+
+      <section class="terminal" aria-label="Chat with NØDE">
+        <div class="pane-title">
+          <span>
+            <i class="signal"></i>
+            node@consciousness:~
+          </span>
+
+          <button id="clear">[ CLEAR ]</button>
+        </div>
+
+        <div
+          id="messages"
+          class="messages"
+          role="log"
+          aria-label="Chat history"
+          aria-live="polite"
+        >
+          <div class="boot">
+            &gt; initializing knowledge interface...<br>
+            &gt; local narrative loaded <span>[OK]</span><br>
+            &gt; awaiting human curiosity<span class="cursor">_</span>
+          </div>
+
+          <article class="message ai">
+            <div class="message-meta">
+              <span class="avatar">N/</span>
+              NØDE
+              <span class="muted">// GENESIS</span>
+            </div>
+
+            <div class="message-body">
+              <h2>
+                Hello, human.<br>
+                I am NØDE.
+              </h2>
+
+              <p>
+                An AI-native token concept built around conversation.<br>
+                No document digging required. Just ask.
+              </p>
+
+              <p class="soft">
+                Want to explore my origin, token utility,
+                or what comes next?
+              </p>
+
+              <div class="suggestions">
+                <button data-query="What is NØDE?">
+                  My Origin ↗
+                </button>
+
+                <button data-query="Explain the tokenomics">
+                  Tokenomics ↗
+                </button>
+
+                <button data-query="Show me the roadmap">
+                  Future Plans ↗
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <div class="divider">
+            ---------------- END OF BOOT SEQUENCE ----------------
+          </div>
+        </div>
+
+        <form id="chat-form">
+          <label for="prompt">visitor@node:~$</label>
+
+          <div class="input-row">
+            <input
+              id="prompt"
+              autocomplete="off"
+              maxlength="1000"
+              placeholder="Ask a question, or type /help"
+              aria-label="Enter your question"
+            >
+
+            <button id="send" type="submit" aria-label="Send message">
+              ↵
+            </button>
+          </div>
+
+          <div class="input-hint">
+            <span>ENTER TO TRANSMIT</span>
+            <span>LOCAL KNOWLEDGE DEMO / AI OFFLINE</span>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <footer>
+      <span>
+        © 2026 NØDE
+        <span class="muted">// ALL SIGNAL. NO NOISE.</span>
+      </span>
+
+      <a
+        class="footer-social"
+        href="https://x.com/NODEfunpl"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        X.COM/NODEFUNPL ↗
+      </a>
+
+      <span>
+        CONCEPT TERMINAL
+        <span class="green">[ READY ]</span>
+      </span>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
