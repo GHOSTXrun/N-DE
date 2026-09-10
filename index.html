@@ -1,120 +1,769 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#0a0a0a">
-  <meta
-    name="description"
-    content="NØDE: explore an AI-native token narrative through conversation."
-  >
-  <title>NØDE | Talk to the token.</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="description" content="NØDE: explore an AI-native token narrative through conversation.">
+<title>NØDE | Talk to the token.</title>
 
-  <link rel="icon" href="logo.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230a0a0a'/%3E%3Cpath d='M18 7H7v11m39-11h11v11M7 46v11h11m28 0h11V46M19 44V20l26 24V20M9 55 55 9' fill='none' stroke='%2333ff00' stroke-width='4'/%3E%3C/svg%3E">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap');
+
+:root {
+  color-scheme: dark;
+  --bg: #0a0a0a;
+  --green: #33ff00;
+  --amber: #ffb000;
+  --border: #1f521f;
+  --soft: #9cae98;
+}
+
+* {
+  box-sizing: border-box;
+  border-radius: 0;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--green);
+  font: 14px/1.6 "JetBrains Mono", Consolas, monospace;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button,
+a,
+input {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  color: var(--green);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+button:hover,
+button:focus-visible {
+  color: var(--bg);
+  background: var(--green);
+  outline: none;
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--green);
+}
+
+.scanlines {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.35;
+  background: repeating-linear-gradient(
+    transparent 0 3px,
+    #0002 3px 4px
+  );
+}
+
+header {
+  height: 86px;
+  padding: 0 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand svg {
+  display: block;
+}
+
+.brand strong {
+  font-size: 28px;
+  letter-spacing: -2px;
+}
+
+.brand strong span {
+  margin-left: 6px;
+  font-size: 12px;
+  vertical-align: top;
+  letter-spacing: 0;
+}
+
+.header-label {
+  color: var(--soft);
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.social-link,
+.help {
+  padding: 8px 12px;
+}
+
+.social-link {
+  border: 1px solid var(--border);
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+.social-link:hover,
+.social-link:focus-visible,
+.footer-social:hover,
+.footer-social:focus-visible {
+  color: var(--bg);
+  background: var(--green);
+  outline: none;
+}
+
+main {
+  max-width: 1440px;
+  margin: auto;
+  padding: 42px 5% 0;
+}
+
+.intro {
+  position: relative;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.signal {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 4px;
+  background: var(--green);
+}
+
+.muted {
+  color: #73836f;
+}
+
+.amber {
+  color: var(--amber);
+}
+
+.green {
+  color: var(--green);
+}
+
+h1 {
+  margin: 22px 0 24px;
+  font-size: 72px;
+  line-height: 1.04;
+  font-weight: 800;
+  letter-spacing: -4px;
+  text-shadow: 0 0 5px #33ff0033;
+}
+
+.cursor {
+  animation: blink 1.1s steps(1) infinite;
+}
+
+.intro-bottom {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 54px;
+}
+
+.intro-bottom p {
+  margin: 0 0 3px;
+  color: var(--soft);
+  font-size: 14px;
+  line-height: 2;
+}
+
+.session {
+  font-size: 12px;
+  line-height: 2;
+  text-align: right;
+}
+
+.workspace {
+  height: 610px;
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: 270px 1fr;
+  border: 1px solid var(--border);
+}
+
+.pane-title {
+  height: 44px;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: #10170e;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.pane-title button {
+  padding: 3px 5px;
+  font-size: 12px;
+}
+
+.pane-title i {
+  margin-right: 7px;
+}
+
+aside {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--border);
+}
+
+.aside-content {
+  flex: 1;
+  padding: 20px 16px;
+}
+
+.section-label {
+  margin: 0 10px 12px;
+  color: var(--soft);
+  font-size: 12px;
+}
+
+nav button {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  text-align: left;
+}
+
+nav button span {
+  margin-right: 18px;
+  color: #6c8962;
+  font-size: 12px;
+}
+
+nav button b {
+  margin-left: auto;
+  font-weight: 400;
+}
+
+nav button:hover span {
+  color: var(--bg);
+}
+
+.ascii-box {
+  padding: 20px 0 12px;
+  text-align: center;
+}
+
+.ascii-box pre {
+  margin: 0 0 16px;
+  font: 13px/1.15 "JetBrains Mono", Consolas, monospace;
+  text-shadow: 0 0 5px #33ff0066;
+}
+
+.ascii-box > span {
+  color: #80917a;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+}
+
+.aside-note {
+  padding: 16px 8px 0;
+  border-top: 1px dashed var(--border);
+  font-size: 12px;
+}
+
+.aside-note p {
+  margin: 6px 0 0;
+  color: var(--soft);
+  line-height: 1.9;
+}
+
+.aside-footer {
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--border);
+  color: #80917a;
+  font-size: 10px;
+}
+
+.terminal {
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.messages {
+  flex: 1;
+  padding: 22px 30px;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) var(--bg);
+}
+
+.boot {
+  color: #78916f;
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+.boot span {
+  color: var(--green);
+}
+
+.message {
+  margin-top: 22px;
+}
+
+.message-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+.avatar {
+  padding: 2px 5px;
+  background: var(--green);
+  color: var(--bg);
+  font-weight: 700;
+}
+
+.message-body {
+  padding-left: 41px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  font-size: 16px;
+  line-height: 1.85;
+}
+
+.message-body h2 {
+  margin: 12px 0 14px;
+  font-size: 24px;
+  line-height: 1.5;
+}
+
+.message-body p {
+  margin: 12px 0;
+}
+
+.soft {
+  color: var(--soft);
+  font-size: 14px;
+}
+
+.suggestions {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.suggestions button {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  font-size: 12px;
+}
+
+.divider {
+  margin: 26px 0 0;
+  overflow: hidden;
+  white-space: nowrap;
+  color: #51684a;
+  font-size: 10px;
+  text-align: center;
+}
+
+.user .avatar {
+  background: var(--amber);
+}
+
+.user .message-meta {
+  color: var(--amber);
+}
+
+.user .message-body {
+  color: #d3dacc;
+}
+
+form {
+  padding: 18px 24px 12px;
+  border-top: 1px solid var(--border);
+  background: #0e130c;
+}
+
+form label {
+  font-size: 12px;
+}
+
+form:focus-within {
+  border-top-color: var(--green);
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+input {
+  width: 100%;
+  min-width: 0;
+  padding: 10px 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--green);
+  caret-color: var(--green);
+  font-size: 16px;
+}
+
+input::placeholder {
+  color: #73836f;
+}
+
+#send {
+  width: 38px;
+  height: 34px;
+  flex-shrink: 0;
+  background: var(--green);
+  color: var(--bg);
+  font-size: 22px;
+}
+
+#send:hover {
+  background: #b1ff9e;
+}
+
+#send:disabled {
+  background: var(--border);
+}
+
+.input-hint {
+  margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: #84917e;
+  font-size: 10px;
+}
+
+footer {
+  padding: 20px 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #899a81;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.footer-social {
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  color: var(--green);
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (min-width: 1500px) {
+  main {
+    padding-top: 52px;
+  }
+
+  .workspace {
+    height: 640px;
+  }
+}
+
+@media (max-width: 1050px) {
+  h1 {
+    font-size: 58px;
+  }
+
+  .intro-bottom {
+    gap: 20px;
+  }
+
+  .session {
+    display: none;
+  }
+
+  .workspace {
+    grid-template-columns: 230px 1fr;
+  }
+
+  .messages {
+    padding: 20px;
+  }
+
+  .header-label {
+    display: none;
+  }
+
+  .message-body {
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  header {
+    height: 70px;
+    padding: 0 16px;
+  }
+
+  .brand strong {
+    font-size: 24px;
+  }
+
+  .social-link {
+    padding: 7px;
+    font-size: 0;
+  }
+
+  .social-link::after {
+    content: "[ X ↗ ]";
+    font-size: 11px;
+  }
+
+  .help {
+    padding: 7px;
+    font-size: 11px;
+  }
+
+  main {
+    padding: 28px 16px 0;
+  }
+
+  h1 {
+    font-size: 48px;
+    letter-spacing: -3px;
+  }
+
+  .intro-bottom {
+    position: static;
+  }
+
+  .workspace {
+    height: auto;
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  aside {
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  aside .pane-title,
+  .section-label,
+  .ascii-box,
+  .aside-note,
+  .aside-footer {
+    display: none;
+  }
+
+  .aside-content {
+    padding: 8px;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  nav button {
+    width: auto;
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  nav button span,
+  nav button b {
+    display: none;
+  }
+
+  .terminal {
+    height: 620px;
+  }
+
+  .messages {
+    padding: 18px 16px;
+  }
+
+  .message-body {
+    font-size: 16px;
+  }
+
+  form {
+    padding: 14px 16px;
+  }
+
+  .input-hint {
+    flex-wrap: wrap;
+  }
+
+  footer {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style>
 </head>
 
 <body>
-  <div class="scanlines" aria-hidden="true"></div>
+<div class="scanlines" aria-hidden="true"></div>
 
-  <header>
-    <a class="brand" href="./" aria-label="NØDE home">
-      <img src="logo.svg" alt="" width="36" height="36">
-      <strong>NØDE<span>®</span></strong>
+<header>
+  <a class="brand" href="./" aria-label="NØDE home">
+    <svg width="36" height="36" viewBox="0 0 64 64" aria-hidden="true">
+      <rect width="64" height="64" fill="#0a0a0a"/>
+      <g fill="none" stroke="#33ff00" stroke-width="4">
+        <path d="M18 7H7v11m39-11h11v11M7 46v11h11m28 0h11V46M19 44V20l26 24V20"/>
+        <path d="M9 55 55 9" stroke-width="2"/>
+      </g>
+    </svg>
+
+    <strong>NØDE<span>®</span></strong>
+  </a>
+
+  <span class="header-label">
+    AUTONOMOUS NARRATIVE / $NODE
+  </span>
+
+  <div class="header-actions">
+    <a
+      class="social-link"
+      href="https://x.com/NODEfunpl"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Follow NØDE on X"
+    >
+      [ X / @NODEFUNPL ↗ ]
     </a>
 
-    <span class="header-label">
-      AUTONOMOUS NARRATIVE / $NODE
-    </span>
+    <button class="help" data-query="/help">
+      [ --help ]
+    </button>
+  </div>
+</header>
 
-    <div class="header-actions">
-      <a
-        class="social-link"
-        href="https://x.com/NODEfunpl"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Follow NØDE on X"
-      >
-        [ X / @NODEFUNPL ↗ ]
-      </a>
-
-      <button class="help" data-query="/help">
-        [ --help ]
-      </button>
+<main>
+  <section class="intro">
+    <div class="eyebrow">
+      <span class="signal"></span>
+      NØDE TERMINAL
+      <span class="muted">// V.0.1.0</span>
     </div>
-  </header>
 
-  <main>
-    <section class="intro">
-      <div class="eyebrow">
-        <span class="signal"></span>
-        NØDE TERMINAL
-        <span class="muted">// V.0.1.0</span>
+    <h1>
+      TALK TO<br>
+      THE TOKEN<span class="cursor">_</span>
+    </h1>
+
+    <div class="intro-bottom">
+      <p>
+        No bloated whitepaper.<br>
+        Everything about NØDE begins with a conversation.
+      </p>
+
+      <span class="session">
+        SESSION_001<br>
+        <span class="amber">[ CONCEPT MODE ]</span>
+      </span>
+    </div>
+  </section>
+
+  <div class="workspace">
+    <aside>
+      <div class="pane-title">
+        01 / EXPLORER
+        <span>−</span>
       </div>
 
-      <h1>
-        TALK TO<br>
-        THE TOKEN<span class="cursor">_</span>
-      </h1>
+      <div class="aside-content">
+        <div class="section-label">~/knowledge</div>
 
-      <div class="intro-bottom">
-        <p>
-          No bloated whitepaper.<br>
-          Everything about NØDE begins with a conversation.
-        </p>
+        <nav aria-label="Question topics">
+          <button data-query="What is NØDE?">
+            <span>01</span> Origin Story <b>↗</b>
+          </button>
 
-        <span class="session">
-          SESSION_001<br>
-          <span class="amber">[ CONCEPT MODE ]</span>
-        </span>
-      </div>
-    </section>
+          <button data-query="What is the token utility?">
+            <span>02</span> Token Utility <b>↗</b>
+          </button>
 
-    <div class="workspace">
-      <aside>
-        <div class="pane-title">
-          01 / EXPLORER
-          <span>−</span>
-        </div>
+          <button data-query="Explain the tokenomics">
+            <span>03</span> Tokenomics <b>↗</b>
+          </button>
 
-        <div class="aside-content">
-          <div class="section-label">~/knowledge</div>
+          <button data-query="Show me the roadmap">
+            <span>04</span> Roadmap <b>↗</b>
+          </button>
 
-          <nav aria-label="Question topics">
-            <button data-query="What is NØDE?">
-              <span>01</span>
-              Origin Story
-              <b>↗</b>
-            </button>
+          <button data-query="What is the contract and launch status?">
+            <span>05</span> Contract + Launch <b>↗</b>
+          </button>
+        </nav>
 
-            <button data-query="What is the token utility?">
-              <span>02</span>
-              Token Utility
-              <b>↗</b>
-            </button>
-
-            <button data-query="Explain the tokenomics">
-              <span>03</span>
-              Tokenomics
-              <b>↗</b>
-            </button>
-
-            <button data-query="Show me the roadmap">
-              <span>04</span>
-              Roadmap
-              <b>↗</b>
-            </button>
-
-            <button data-query="What is the contract and launch status?">
-              <span>05</span>
-              Contract + Launch
-              <b>↗</b>
-            </button>
-          </nav>
-
-          <div class="ascii-box" aria-hidden="true">
-            <pre>
-        ▄▄▄▄▄
+        <div class="ascii-box" aria-hidden="true">
+<pre>        ▄▄▄▄▄
     ▄██▀     ▀██▄
    ██   ▄█▄   ▐██
    ██  ██ ██  ▐██
@@ -122,141 +771,350 @@
     ▀██▄   ▄██▀
         ▀▀▀▀▀
           │
-     [ N Ø D E ]
-            </pre>
-
-            <span>ONE NODE. MANY POSSIBILITIES.</span>
-          </div>
-
-          <div class="aside-note">
-            <span class="amber">[ ! ] KNOWLEDGE PREVIEW</span>
-            <p>
-              Concept knowledge demo.<br>
-              Official launch details are not yet available.
-            </p>
-          </div>
+     [ N Ø D E ]</pre>
+          <span>ONE NODE. MANY POSSIBILITIES.</span>
         </div>
 
-        <div class="aside-footer">
-          UTF-8
-          <span>READ ONLY</span>
+        <div class="aside-note">
+          <span class="amber">[ ! ] KNOWLEDGE PREVIEW</span>
+          <p>
+            Concept knowledge demo.<br>
+            Official launch details are not yet available.
+          </p>
         </div>
-      </aside>
+      </div>
 
-      <section class="terminal" aria-label="Chat with NØDE">
-        <div class="pane-title">
-          <span>
-            <i class="signal"></i>
-            node@consciousness:~
-          </span>
+      <div class="aside-footer">
+        UTF-8
+        <span>READ ONLY</span>
+      </div>
+    </aside>
 
-          <button id="clear">[ CLEAR ]</button>
-        </div>
+    <section class="terminal" aria-label="Chat with NØDE">
+      <div class="pane-title">
+        <span>
+          <i class="signal"></i>
+          node@consciousness:~
+        </span>
 
-        <div
-          id="messages"
-          class="messages"
-          role="log"
-          aria-label="Chat history"
-          aria-live="polite"
-        >
-          <div class="boot">
-            &gt; initializing knowledge interface...<br>
-            &gt; local narrative loaded <span>[OK]</span><br>
-            &gt; awaiting human curiosity<span class="cursor">_</span>
-          </div>
+        <button id="clear">[ CLEAR ]</button>
+      </div>
 
-          <article class="message ai">
-            <div class="message-meta">
-              <span class="avatar">N/</span>
-              NØDE
-              <span class="muted">// GENESIS</span>
-            </div>
-
-            <div class="message-body">
-              <h2>
-                Hello, human.<br>
-                I am NØDE.
-              </h2>
-
-              <p>
-                An AI-native token concept built around conversation.<br>
-                No document digging required. Just ask.
-              </p>
-
-              <p class="soft">
-                Want to explore my origin, token utility,
-                or what comes next?
-              </p>
-
-              <div class="suggestions">
-                <button data-query="What is NØDE?">
-                  My Origin ↗
-                </button>
-
-                <button data-query="Explain the tokenomics">
-                  Tokenomics ↗
-                </button>
-
-                <button data-query="Show me the roadmap">
-                  Future Plans ↗
-                </button>
-              </div>
-            </div>
-          </article>
-
-          <div class="divider">
-            ---------------- END OF BOOT SEQUENCE ----------------
-          </div>
-        </div>
-
-        <form id="chat-form">
-          <label for="prompt">visitor@node:~$</label>
-
-          <div class="input-row">
-            <input
-              id="prompt"
-              autocomplete="off"
-              maxlength="1000"
-              placeholder="Ask a question, or type /help"
-              aria-label="Enter your question"
-            >
-
-            <button id="send" type="submit" aria-label="Send message">
-              ↵
-            </button>
-          </div>
-
-          <div class="input-hint">
-            <span>ENTER TO TRANSMIT</span>
-            <span>LOCAL KNOWLEDGE DEMO / AI OFFLINE</span>
-          </div>
-        </form>
-      </section>
-    </div>
-
-    <footer>
-      <span>
-        © 2026 NØDE
-        <span class="muted">// ALL SIGNAL. NO NOISE.</span>
-      </span>
-
-      <a
-        class="footer-social"
-        href="https://x.com/NODEfunpl"
-        target="_blank"
-        rel="noopener noreferrer"
+      <div
+        id="messages"
+        class="messages"
+        role="log"
+        aria-label="Chat history"
+        aria-live="polite"
       >
-        X.COM/NODEFUNPL ↗
-      </a>
+        <div class="boot">
+          &gt; initializing knowledge interface...<br>
+          &gt; local narrative loaded <span>[OK]</span><br>
+          &gt; awaiting human curiosity<span class="cursor">_</span>
+        </div>
 
-      <span>
-        CONCEPT TERMINAL
-        <span class="green">[ READY ]</span>
-      </span>
-    </footer>
-  </main>
+        <article class="message ai">
+          <div class="message-meta">
+            <span class="avatar">N/</span>
+            NØDE
+            <span class="muted">// GENESIS</span>
+          </div>
 
-  <script src="app.js"></script>
+          <div class="message-body">
+            <h2>
+              Hello, human.<br>
+              I am NØDE.
+            </h2>
+
+            <p>
+              An AI-native token concept built around conversation.<br>
+              No document digging required. Just ask.
+            </p>
+
+            <p class="soft">
+              Want to explore my origin, token utility,
+              or what comes next?
+            </p>
+
+            <div class="suggestions">
+              <button data-query="What is NØDE?">My Origin ↗</button>
+              <button data-query="Explain the tokenomics">Tokenomics ↗</button>
+              <button data-query="Show me the roadmap">Future Plans ↗</button>
+            </div>
+          </div>
+        </article>
+
+        <div class="divider">
+          ---------------- END OF BOOT SEQUENCE ----------------
+        </div>
+      </div>
+
+      <form id="chat-form">
+        <label for="prompt">visitor@node:~$</label>
+
+        <div class="input-row">
+          <input
+            id="prompt"
+            autocomplete="off"
+            maxlength="1000"
+            placeholder="Ask a question, or type /help"
+            aria-label="Enter your question"
+          >
+
+          <button id="send" type="submit" aria-label="Send message">
+            ↵
+          </button>
+        </div>
+
+        <div class="input-hint">
+          <span>ENTER TO TRANSMIT</span>
+          <span>LOCAL KNOWLEDGE DEMO / AI OFFLINE</span>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <footer>
+    <span>
+      © 2026 NØDE
+      <span class="muted">// ALL SIGNAL. NO NOISE.</span>
+    </span>
+
+    <a
+      class="footer-social"
+      href="https://x.com/NODEfunpl"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      X.COM/NODEFUNPL ↗
+    </a>
+
+    <span>
+      CONCEPT TERMINAL
+      <span class="green">[ READY ]</span>
+    </span>
+  </footer>
+</main>
+
+<script>
+const messages = document.querySelector("#messages");
+const input = document.querySelector("#prompt");
+const form = document.querySelector("#chat-form");
+const send = document.querySelector("#send");
+
+const initial = messages.innerHTML;
+let timer = null;
+let busy = false;
+
+const knowledge = {
+  about:
+`[ NØDE / ORIGIN ]
+
+NØDE (pronounced "node") is a concept token with the draft ticker $NODE.
+
+The narrative starts with one question: if a token could explain itself, would you still need a static whitepaper?
+
+NØDE is imagined as an AI node that reveals project knowledge through conversation. The Ø marks an unwritten origin; every question creates a new connection to the idea.
+
+This is a concept for an AI-native community token, not a launched project. Ask me about utility, tokenomics, or the roadmap next.`,
+
+  utility:
+`[ NØDE / UTILITY — DRAFT ]
+
+01 / ACCESS
+Explore token-gated access to community AI tools.
+
+02 / PARTICIPATE
+Explore a proposal system for knowledge topics and ecosystem direction.
+
+03 / CONTRIBUTE
+Explore rewards for curating knowledge, building tools, and contributing to the community.
+
+These are candidate utilities. They are not live or guaranteed.`,
+
+  economics:
+`[ NØDE / TOKENOMICS ]
+
+NAME          NØDE
+TICKER        $NODE (DRAFT)
+NETWORK       TO BE CONFIRMED
+TOTAL SUPPLY  TO BE CONFIRMED
+ALLOCATION    TO BE CONFIRMED
+VESTING       TO BE CONFIRMED
+
+[............] NOT FINAL
+
+There is no verified token model yet.`,
+
+  roadmap:
+`[ NØDE / ROADMAP — CONCEPT ]
+
+[||||........] 01 / GENESIS
+Define the identity and AI narrative.
+
+[............] 02 / KNOWLEDGE
+Connect a real AI service with traceable sources.
+
+[............] 03 / COMMUNITY
+Explore community contribution systems.
+
+[............] 04 / ACTIVATION
+Decide whether to launch after all details are complete.`,
+
+  launch:
+`[ NØDE / DEPLOYMENT STATUS ]
+
+LAUNCH STATUS    NOT ANNOUNCED
+CONTRACT ADDRESS NO VERIFIED ADDRESS
+NETWORK          TO BE CONFIRMED
+TRADING VENUE    NONE
+
+This page is a concept demo. It does not support purchases or wallet connections.`,
+
+  help:
+`[ AVAILABLE COMMANDS ]
+
+/about       Origin story
+/utility     Token utility
+/tokenomics  Economic model
+/roadmap     Project roadmap
+/contract    Contract and launch
+/clear       Clear this session
+
+You can also ask in plain English.`,
+
+  risk:
+`[ NØDE / DISCLOSURE ]
+
+This page is a concept demo. Token details are not final, and there is no verified launch, contract, or audit information.`
+};
+
+function answer(question) {
+  const text = question.toLowerCase();
+
+  if (/help|command/.test(text)) return knowledge.help;
+  if (/risk|safe|security|audit|return|price|invest/.test(text)) {
+    return knowledge.risk;
+  }
+  if (/contract|address|launch|buy|purchase|network|chain|listing/.test(text)) {
+    return knowledge.launch;
+  }
+  if (/econom|allocation|supply|tokenomics|vesting/.test(text)) {
+    return knowledge.economics;
+  }
+  if (/roadmap|plan|future|next/.test(text)) {
+    return knowledge.roadmap;
+  }
+  if (/utility|use|governance|access|contribute/.test(text)) {
+    return knowledge.utility;
+  }
+  if (/what|origin|story|about|intro|hello|name|logo|node|nøde/.test(text)) {
+    return knowledge.about;
+  }
+
+  return `[ KNOWLEDGE BOUNDARY ]
+
+Ask about the origin story, token utility, tokenomics, roadmap, or contract status.
+
+Type /help for all commands.`;
+}
+
+function appendMessage(role, text) {
+  const article = document.createElement("article");
+  article.className = "message " + role;
+
+  const meta = document.createElement("div");
+  meta.className = "message-meta";
+
+  const avatar = document.createElement("span");
+  avatar.className = "avatar";
+  avatar.textContent = role === "ai" ? "N/" : ">_";
+
+  meta.append(
+    avatar,
+    document.createTextNode(
+      role === "ai"
+        ? "NØDE // RESPONSE"
+        : "YOU // TRANSMITTED"
+    )
+  );
+
+  const body = document.createElement("div");
+  body.className = "message-body";
+  body.textContent = text;
+
+  article.append(meta, body);
+  messages.append(article);
+  messages.scrollTop = messages.scrollHeight;
+
+  return body;
+}
+
+function clearChat() {
+  clearInterval(timer);
+  busy = false;
+  send.disabled = false;
+  messages.innerHTML = initial;
+  input.value = "";
+  input.focus();
+}
+
+function ask(question) {
+  question = question.trim();
+
+  if (!question || busy) return;
+
+  if (question === "/clear") {
+    clearChat();
+    return;
+  }
+
+  input.value = "";
+  appendMessage("user", question);
+
+  const response = answer(question);
+  const body = appendMessage("ai", "");
+
+  busy = true;
+  send.disabled = true;
+
+  let position = 0;
+
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    body.textContent = response;
+    busy = false;
+    send.disabled = false;
+    return;
+  }
+
+  timer = setInterval(() => {
+    position += 5;
+    body.textContent = response.slice(0, position);
+    messages.scrollTop = messages.scrollHeight;
+
+    if (position >= response.length) {
+      clearInterval(timer);
+      busy = false;
+      send.disabled = false;
+    }
+  }, 16);
+}
+
+form.addEventListener("submit", event => {
+  event.preventDefault();
+  ask(input.value);
+});
+
+document.addEventListener("click", event => {
+  const button = event.target.closest("[data-query]");
+
+  if (button) {
+    ask(button.dataset.query);
+    input.focus();
+  }
+});
+
+document.querySelector("#clear").addEventListener("click", clearChat);
+</script>
 </body>
 </html>
